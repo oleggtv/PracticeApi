@@ -1,25 +1,33 @@
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using System.Text.RegularExpressions;
+namespace PracticeApi
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    class Program
+    {
+        static async Task Main(string[] args)
+        {
+            List<Person> users = new List<Person>()
+            {
+                new() {Id = Guid.NewGuid(), UserName = "Oleg", Email = "oleggtv@gmail.com"},
+                new() {Id = Guid.NewGuid(), UserName = "Andry", Email = "batmangtv@gmail.com"},
+                new() {Id = Guid.NewGuid(), UserName = "Svitlana", Email = "svetlanagtv@gmail.com"}
+            };
+            var builder = WebApplication.CreateBuilder(args);
+            var app = builder.Build();
+            app.Run(async (context) =>
+            {
+                var request = context.Request;
+                var response = context.Response;
+                var path = request.Path;
+                if (path == "/users" && request.Method == "GET")
+                {
+                    await GetAllPeople(response);
+                }
+            });
+            app.Run();
+            async Task GetAllPeople(HttpResponse response)
+            {
+                await response.WriteAsJsonAsync(users);
+            }
+        }
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
