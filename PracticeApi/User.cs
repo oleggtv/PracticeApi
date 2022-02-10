@@ -1,6 +1,6 @@
 ﻿namespace PracticeApi
 {
-    public class Person
+    public class User
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }

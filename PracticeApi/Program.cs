@@ -5,14 +5,22 @@ namespace PracticeApi
     {
         static async Task Main(string[] args)
         {
-            List<Person> users = new List<Person>()
+            List<User> users = new List<User>()
             {
                 new() {Id = Guid.NewGuid(), UserName = "Oleg", Email = "oleggtv@gmail.com"},
                 new() {Id = Guid.NewGuid(), UserName = "Andry", Email = "batmangtv@gmail.com"},
                 new() {Id = Guid.NewGuid(), UserName = "Svitlana", Email = "svetlanagtv@gmail.com"}
             };
             var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddControllers();
             var app = builder.Build();
+            app.UseHttpsRedirection();
+
+            app.UseAuthorization();
+
+
+            app.MapControllers();
             app.Run(async (context) =>
             {
                 var request = context.Request;
