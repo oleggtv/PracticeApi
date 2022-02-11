@@ -19,20 +19,30 @@ namespace PracticeApi.Controllers
             _logger = logger;
         }
         [HttpGet(Name = "GetUser")]
-        //public async IEnumerable<User> Get()
+        public List<User> Get()
+        {
+            //    //Request request = context.Request;
+            //    //var response = context.Response;
+            //    var path = Request.Path;
+            //    if (path == "/users" && Request.Method == "GET")
+            //    {
+            //        return await GetAllPeople(Response);
+            //    }
+            return users;
+            //    //.ToArray();
+        }
+        //public IEnumerable<WeatherForecast> Get()
         //{
-        //    //Request request = context.Request;
-        //    //var response = context.Response;
-        //    var path = Request.Path;
-        //    if (path == "/users" && Request.Method == "GET")
+        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         //    {
-        //        return await GetAllPeople(Response);
-        //    }
-        //    //return users;
-        //    //.ToArray();
+        //        Date = DateTime.Now.AddDays(index),
+        //        TemperatureC = Random.Shared.Next(-20, 55),
+        //        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+        //    })
+        //    .ToArray();
         //}
- 
-    async Task GetAllPeople(HttpResponse response)
+
+        async Task GetAllPeople(HttpResponse response)
         {
             await response.WriteAsJsonAsync(users);
         }
