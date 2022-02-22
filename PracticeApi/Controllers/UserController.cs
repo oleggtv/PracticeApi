@@ -1,50 +1,50 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PracticeApi.Services;
+using PracticeApi.Repository;
 
-namespace PracticeApi.Controllers
+//namespace PracticeApi.Controllers
+namespace PracticeApi
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        List<User> users = new List<User>()
-            {
-                new() {Id = Guid.NewGuid(), UserName = "Oleg", Email = "oleggtv@gmail.com"},
-                new() {Id = Guid.NewGuid(), UserName = "Andry", Email = "batmangtv@gmail.com"},
-                new() {Id = Guid.NewGuid(), UserName = "Svitlana", Email = "svetlanagtv@gmail.com"}
-            };
         private readonly ILogger<UserController> _logger;
-        public UserController(ILogger<UserController> logger)
+        private readonly IUserService _userService;
+        //private readonly IUserRepository _userRepository;
+        public UserController(ILogger<UserController> logger, IUserService userService)
         {
             _logger = logger;
+            _userService = userService;
         }
-        [HttpGet(Name = "GetUser")]
-        public List<User> Get()
-        {
-            //    //Request request = context.Request;
-            //    //var response = context.Response;
-            //    var path = Request.Path;
-            //    if (path == "/users" && Request.Method == "GET")
-            //    {
-            //        return await GetAllPeople(Response);
-            //    }
-            return users;
-            //    //.ToArray();
-        }
-        //public IEnumerable<WeatherForecast> Get()
-        //{
-        //    return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        //    {
-        //        Date = DateTime.Now.AddDays(index),
-        //        TemperatureC = Random.Shared.Next(-20, 55),
-        //        Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-        //    })
-        //    .ToArray();
-        //}
 
-        async Task GetAllPeople(HttpResponse response)
+        [HttpGet]
+        public List<User> GetAll()
         {
-            await response.WriteAsJsonAsync(users);
+            var users = _userService.GetAll();
+            return users;
         }
+
+        [HttpGet("{id}")]
+        public User GetUser(Guid id)
+        {
+            var user = _userService.GetUser(id);
+            return user;
+        }
+
+        [HttpPost]
+        public List<User> AddUser(User user)
+        {
+            var users = _userService.AddUser(user);
+            return users;
+        }
+
+        //[HttpPut("{id}")]
+        //public List<User> PutUser(User user)
+        //{
+        //    var users = _userService.ReplaceUser(user);
+        //    return users;
+        //}
     }
 }
